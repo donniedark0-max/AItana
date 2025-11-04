@@ -1,0 +1,32 @@
+# 1. Usar una imagen base de Python ligera y oficial.
+FROM python:3.11-slim
+
+# 2. Establecer el directorio de trabajo dentro del contenedor.
+WORKDIR /app
+
+# 3. Instalar dependencias del sistema operativo.
+# Tesseract OCR no es un paquete de Python, es un programa del sistema.
+# Debemos instalarlo usando el gestor de paquetes de Debian (apt-get).
+# Incluimos el paquete de idioma español (tesseract-ocr-spa).
+RUN apt-get update && apt-get install -y \
+    tesseract-ocr \
+    tesseract-ocr-spa \
+    && rm -rf /var/lib/apt/lists/*
+
+# 4. Copiar primero el archivo de dependencias.
+# Esto aprovecha el cache de capas de Docker. Si requirements.txt no cambia,
+# Docker no reinstalará las dependencias cada vez que construyas la imagen.
+COPY requirements.txt .
+
+# 5. Instalar las dependencias de Python.
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 6. Copiar el resto del código de la aplicación.
+COPY . .
+
+# 7. Exponer el puerto en el que correrá Uvicorn.
+EXPOSE 8000
+
+# 8. El comando para iniciar la aplicación cuando el contenedor se ejecute.
+# --host 0.0.0.0 es crucial para que sea accesible desde fuera del contenedor.
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
