@@ -1,0 +1,12 @@
+# FastAPI y servidor web
+fastapi
+uvicorn[standard]
+
+# Para manejar la subida de archivos
+python-multipart
+
+# La librería de OCR y su wrapper para Python
+pytesseract
+Pillow
+
+# Modelos de datos (Pydantic viene con FastAPI)
