@@ -1,0 +1,12 @@
+# FastAPI y servidor web
+fastapi
+uvicorn[standard]
+
+# La librería de IA para detección de manos y poses
+mediapipe
+
+# OpenCV es necesario para decodificar y manipular los fotogramas de video
+opencv-python-headless
+
+# NumPy es una dependencia fundamental para OpenCV y MediaPipe
+numpy

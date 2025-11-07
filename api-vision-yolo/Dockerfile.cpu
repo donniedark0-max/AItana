@@ -1,0 +1,28 @@
+# 1. Usar la misma imagen base de Python.
+FROM python:3.11-slim
+
+# 2. Establecer el directorio de trabajo.
+WORKDIR /app
+
+# 3. Instalar dependencias del sistema operativo para OpenCV.
+RUN apt-get update && apt-get install -y \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# 4. Copiar y instalar dependencias de Python.
+# La instalación de ultralytics y torch puede tomar un tiempo.
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 5. Copiar la carpeta con el modelo de IA a la imagen.
+COPY ./models /app/models
+
+# 6. Copiar el resto del código de la aplicación.
+COPY main.py .
+
+# 7. Exponer el puerto.
+EXPOSE 8000
+
+# 8. Comando para iniciar la aplicación.
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

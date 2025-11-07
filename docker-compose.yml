@@ -1,0 +1,86 @@
+services:
+  # ... (mongodb, api-vision-ocr, api-vision-faces, api-vision-gestures sin cambios)
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - aitana_network
+
+  api-vision-ocr:
+    build:
+      context: ./api-vision-ocr
+      dockerfile: Dockerfile.cpu
+    container_name: api-vision-ocr
+    ports:
+      - "8001:8000"
+    networks:
+      - aitana_network
+    depends_on:
+      - mongodb
+
+  api-vision-faces:
+    build:
+      context: ./api-vision-faces
+      dockerfile: Dockerfile.cpu
+    container_name: api-vision-faces
+    ports:
+      - "8002:8000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017
+    networks:
+      - aitana_network
+    depends_on:
+      - mongodb
+
+  api-vision-gestures:
+    build:
+      context: ./api-vision-gestures
+      dockerfile: Dockerfile.cpu
+    container_name: api-vision-gestures
+    ports:
+      - "8003:8000"
+    networks:
+      - aitana_network
+
+  # --- Microservicio de Detección de Objetos YOLO ---
+  api-vision-yolo:
+    build:
+      context: ./api-vision-yolo
+      dockerfile: Dockerfile.cpu
+    container_name: api-vision-yolo
+    ports:
+      - "8004:8000" # Expone el servicio en el puerto 8004 de tu Mac
+    networks:
+      - aitana_network
+
+ # --- API Gateway y Orquestador Central ---
+  api-orchestrator:
+    build:
+      context: ./api-orchestrator
+      dockerfile: Dockerfile.cpu
+    container_name: api-orchestrator
+    ports:
+      - "8000:8000" # El único puerto que expondremos al final
+    env_file:
+      - ./.env # Carga las variables de entorno desde el archivo .env raíz
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017
+    networks:
+      - aitana_network
+    depends_on: # Depende de que TODOS los workers estén listos
+      - mongodb
+      - api-vision-ocr
+      - api-vision-faces
+      - api-vision-gestures
+      - api-vision-yolo
+
+volumes:
+  mongodb_data:
+
+networks:
+  aitana_network:
+    driver: bridge

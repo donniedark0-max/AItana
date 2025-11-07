@@ -1,0 +1,18 @@
+# FastAPI y servidor web
+fastapi
+uvicorn[standard]
+
+# Driver asíncrono para MongoDB (para perfiles de usuario)
+motor
+
+# Cliente HTTP asíncrono para llamar a los workers (OCR, Faces)
+httpx
+
+# Cliente WebSocket asíncrono para llamar a los workers (YOLO, Gestures)
+websockets
+
+# SDK oficial de Google para la API de Gemini
+google-generativeai
+
+# Para gestionar variables de entorno
+pydantic-settings

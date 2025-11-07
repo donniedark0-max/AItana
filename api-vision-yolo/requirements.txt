@@ -1,0 +1,12 @@
+# FastAPI y servidor web
+fastapi
+uvicorn[standard]
+
+# La librería de IA para detección de objetos (incluye torch, opencv, etc.)
+ultralytics
+
+# NumPy es una dependencia fundamental
+numpy
+
+# Para clustering de color (K-Means)
+scikit-learn

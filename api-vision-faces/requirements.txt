@@ -1,0 +1,16 @@
+# FastAPI y servidor web
+fastapi
+uvicorn[standard]
+
+# Para manejar la subida de archivos y datos de formulario
+python-multipart
+
+# Librería de reconocimiento facial y su dependencia para imágenes
+face-recognition
+Pillow
+
+# Driver asíncrono para MongoDB
+motor
+
+# Para gestionar variables de entorno (ej. MONGODB_URI)
+pydantic-settings
