@@ -8,3 +8,15 @@ __pycache__/
 # Archivos de configuración de IDEs
 .vscode/
 .idea/
+
+# Modelo YOLO
+yolov11x.pt
+
+# Imágenes en la carpeta raíz
+/*.jpg
+/*.jpeg
+/*.png
+/*.gif
+/*.bmp
+/*.webp
+/*.svg
