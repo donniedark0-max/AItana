@@ -10,7 +10,8 @@ __pycache__/
 .idea/
 
 # Modelo YOLO
-/*yolov11x.pt
+yolov11x.pt
+api-vision-yolo/models/yolov11x.pt
 
 # Imágenes en la carpeta raíz
 /*.jpg
